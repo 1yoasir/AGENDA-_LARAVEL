@@ -19,7 +19,6 @@ Route::middleware([])->group(function (){
 
     Route::get('/categoria/{categoria}', [CategoriasController::class, 'editarCategoria']);
 
-    Route::post('/categoria/{categoria}', [CategoriasController::class, 'actualizarCategoria']);
-
+    Route::put('/categoria/{categoria}', [CategoriasController::class, 'actualizarCategoria']);
 
 });
