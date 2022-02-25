@@ -1,7 +1,7 @@
 <body>
 <h1>Crear categoria</h1>
 <form action="{{route('categorias.store')}}" method="POST">
-    @method('put')
+@method('POST')
     <label for="nombre">Nombre</label>
     <input type="text" name="nombre"  placeholder="Introduce nombre">
     <input type="submit" name="crear" value="Crear">
