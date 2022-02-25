@@ -9,43 +9,54 @@ use Illuminate\Support\Facades\DB;
 
 class CategoriasController extends Controller
 {
-    public function listadoCategorias(){
-        $categorias = Categoria::all();
-        return view ('listadoCategorias', compact('categorias'));
+    public function index(){
+        $categorias = Categoria::orderBy('nombre')->get();
+        return view ('listado', compact('categorias'));
     }
 
-    public function anhadirCategoria(){
-        return view('añadirCategoria');
+    public function create(){
+        return view('anhadir');
     }
 
-    public function crearCategoria (Request $request){
-        $nombre = $request->input('nombre');
-        DB::table('categorias')->insert([
-            'nombre'=>$nombre
+    public function store (Request $request, Categoria $categoria){
+        $this->validate($request, [
+            'nombre' => 'required',
         ]);
-        return redirect('/categorias');
+        $categoria->nombre = $request->nombre;
+        $categoria->save();
+        //return redirect('/categorias'); Antigua forma
+        return redirect()->route('categorias.index');
     }
 
-    public function editarCategoria(Categoria $categoria){
-        $nombre= $categoria->nombre;
-        $id= $categoria->id;
-        return view('editarCategoria', compact('nombre', 'id'));
+    public function show(Categoria $categoria){
+        $id = $categoria->id;
+        $nombre = $categoria->nombre;
+        return view('categoria_show', compact('id', 'nombre'));
     }
 
-    public function actualizarCategoria(Request $request){
+    public function edit(Categoria $categoria){
+        $id = $categoria->id;
+        $nombre = $categoria->nombre;
+        return view('editar', compact('id', 'nombre'));
+    }
 
-        if(isset($_POST['eliminar'])){
-            $id = $request->input('id');
-            DB::table('categorias')->whereId($id) ->delete();
-            return redirect('/categorias');
-        } else{
-            $nombre = $request ->input('nombre');
-            $id = $request->input('id');
+    public function update(Request $request, $id){
+            $nombre = $request->nombre;
+
             DB::table('categorias')->where("id", $id)->update([
                 'nombre'=>$nombre
             ]);
-            return redirect('/categorias');
-        }
+            return redirect()->route('categorias.index');
+
+    }
+
+    public function destroy(Categoria $categoria){
+
+        $categoria->delete();
+        return redirect()->route('categorias.index');
 
     }
 }
+//Route::resource('categorias', CategoriaController:class) -> only(rutas);
+//el only si solo quiero algunos y si quiero todos, sin nada
+//index create store update destroy show

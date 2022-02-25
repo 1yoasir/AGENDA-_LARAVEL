@@ -9,16 +9,25 @@ Route::get('/', function () {
     return view('bienvenida');
 });
 
-Route::middleware([])->group(function (){
+Route::resource('categorias', CategoriasController::class);
 
-    Route::get('/categorias', [CategoriasController::class, 'listadoCategorias']);
 
-    Route::get('/categoria', [CategoriasController::class, 'anhadirCategoria']);
+//{{\route('anhadir', $persona)}}
+/*Route::middleware([])->group(function (){
 
-    Route::post('/categoria', [CategoriasController::class, 'crearCategoria']);
+    Route::controller(CategoriasController::class)->group(function (){
 
-    Route::get('/categoria/{categoria}', [CategoriasController::class, 'editarCategoria']);
+        Route::get('/categorias', 'listado');
 
-    Route::put('/categoria/{categoria}', [CategoriasController::class, 'actualizarCategoria']);
+        Route::get('/categoria', 'anhadir');
 
-});
+        Route::post('/categoria', 'crear');
+
+        Route::get('/categoria/{categoria}', 'editar');
+
+        Route::post('/categoria/{categoria}', 'actualizar');
+
+    });
+
+
+});*/
